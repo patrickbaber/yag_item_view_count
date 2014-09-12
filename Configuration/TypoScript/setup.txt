@@ -1,0 +1,22 @@
+config.tx_extbase {
+    # Extend YAG controller
+    objects {
+        Tx_Yag_Controller_ItemController.className = Tx_YagItemViewCount_Controller_ItemController
+    }
+    persistence.classes {
+        Tx_Yag_Domain_Model_Item {
+            subclasses {
+                # Unique number
+                3 = Tx_YagItemViewCount_Domain_Model_Item
+            }
+        }
+
+        # Mapping between model and table
+        Tx_YagItemViewCount_Domain_Model_Item {
+           mapping {
+                recordType = 0
+                tableName = tx_yag_domain_model_item
+           }
+        }
+    }
+}

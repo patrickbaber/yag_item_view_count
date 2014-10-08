@@ -34,8 +34,14 @@ class Tx_YagItemViewCount_Controller_ItemController extends Tx_Yag_Controller_It
 		if ($lastIpAddress != $clientIpAddress) {
 			$item->setViewCount($viewCount + 1);
 			$item->setLastIpAddress($clientIpAddress);
-			$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
-			$persistenceManager->persistAll();
+
+			//Doesn't update the yag item.
+			//$persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager');
+			//$persistenceManager->persistAll();
+
+			//These lines work like a charm
+			$repo = t3lib_div::makeInstance('Tx_Yag_Domain_Repository_ItemRepository');
+			$repo->update($item);
 		}
 		parent::showSingleAction($item);
 	}

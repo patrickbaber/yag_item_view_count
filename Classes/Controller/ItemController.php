@@ -3,6 +3,19 @@
 class Tx_YagItemViewCount_Controller_ItemController extends Tx_Yag_Controller_ItemController {
 
 	/**
+	 * The TYPO3 translation call in the methods of the parent class doesn't work fine, because of the wrong extension
+	 * name. That is overwritten by this extension. I have to set the default extension name on construct.
+	 */
+	public function __construct(
+		Tx_PtExtbase_Lifecycle_Manager $lifecycleManager,
+		Tx_PtExtbase_State_Session_SessionPersistenceManagerBuilder $sessionPersistenceManagerBuilder) {
+		parent::__construct($lifecycleManager, $sessionPersistenceManagerBuilder);
+
+		//prevent conflicts with localization cause of the wrong extension key.
+		$this->extensionName = 'yag';
+	}
+
+	/**
 	 * Maybe there is another way to get the ip address.
 	 */
 	protected function _getClientIpAddress() {
@@ -22,6 +35,9 @@ class Tx_YagItemViewCount_Controller_ItemController extends Tx_Yag_Controller_It
 	 * @param Tx_Yag_Domain_Model_Item $item
 	 */
 	public function showSingleAction(Tx_Yag_Domain_Model_Item $item = NULL) {
+		//prevent conflicts with localization cause of the wrong extension key.
+		//$this->extensionName = 'yag';
+
 		// prevent failure on page with single item
 		if (empty($item)) {
 			parent::showSingleAction($item);
@@ -45,4 +61,15 @@ class Tx_YagItemViewCount_Controller_ItemController extends Tx_Yag_Controller_It
 		}
 		parent::showSingleAction($item);
 	}
+
+	/**
+	 * It seems to be, that I have to overload all methods of the parent class which are using the attribute
+	 * "extensionName". This property is wrong because of the extending with this extension.
+	 */
+	/*
+	public function bulkUpdateAction() {
+		$this->extensionName = 'yag';
+		parent::bulkUpdateAction();
+	}
+	*/
 }
